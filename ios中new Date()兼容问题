@@ -1,0 +1,9 @@
+情景:
+用vant组件做APP端的时候用了日期选择插件,发现日期选择一直选择不了,IOS报错,安卓正常.
+最后发现是IOS对new Date(2019,12,19) 这个逗号不做兼容 只对new Date(2019/12/19)兼容 只对竖斜杠做兼容
+ 
+var newTimeStr="2019-12-19";
+function timeFormat(newTimeStr){
+    return newTimeStr.replace(/-/g, "/");
+}
+timeFormat(newTimeStr)
