@@ -1,0 +1,78 @@
+#-*- coding: UTF-8 -*-
+#https://movie.douban.com/top250 1
+#https://movie.douban.com/top250?start=25&filter= 2
+#https://movie.douban.com/top250?start=50&filter= 3
+#10页
+
+from bs4 import BeautifulSoup
+import time
+import json
+from urllib import request
+from lxml import etree
+from xlrd import open_workbook
+from xlutils.copy import copy
+import os
+
+# data_title ---电影名称
+# data_info  ---电影信息（导演、主演、上映时间）
+# data_quote ---电影引言
+# data_score ---电影评分
+# data_num   ---电影评论人数
+# data_picurl---电影封面链接
+array=[]
+pageSize=0;
+def crow(i):
+    if i==0:
+        url = 'https://movie.douban.com/top250?'
+    else:
+        url = 'https://movie.douban.com/top250?start='+str(i*25)+'&filter='
+    html = request.urlopen(url).read().decode('utf-8')
+    html= etree.HTML(html)
+    datas=html.xpath('//ol[@class="grid_view"]/li')
+    for data in datas:
+        data_picurl=data.xpath('div/div[1]/a/img/@src')
+        data_title=data.xpath('div/div[2]/div[1]/a/span[1]/text()')
+        data_info=data.xpath('div/div[2]/div[2]/p[1]/text()')
+        data_quote=data.xpath('div/div[2]/div[2]/p[2]/span/text()')
+        data_score=data.xpath('div/div[2]/div[2]/div/span[2]/text()') 
+        data_num=data.xpath('div/div[2]/div[2]/div/span[4]/text()')
+        array.append({
+            "data_title":data_title[0],
+            "data_info":data_info[0],
+            "data_quote":data_quote[0],
+            "data_score":data_score[0],
+            "data_num":data_num[0],
+            "data_picurl":data_picurl[0]
+        })
+    time.sleep(2)
+    if(i==9):
+        make_excel(array)
+
+
+def make_excel(data_array):
+    #header = [u'电影名称',u'电影信息',u'电影引言',u'电影评分',u'电影评论人数',u'电影图片连接']
+    headerTit=['data_title','data_info','data_quote','data_score','data_num','data_picurl']
+    rb = open_workbook(r'C:\\Users\\Q\AppData\\Local\\Programs\\Python\\Python37\\爬虫实例\\douban.xls')
+    rs = rb.sheet_by_index(0)
+    wb = copy(rb)    
+    ws = wb.get_sheet(0)
+    '''
+    i=0
+    for each_header in header:
+        ws.write(0,i, each_header)
+        i+=1
+    '''
+    rows=1
+    for row in data_array:
+        cols=0
+        for col in headerTit:
+            ws.write(rows,cols,row[col])
+            cols+=1
+        rows+=1
+    os.remove(r'C:\\Users\\Q\AppData\\Local\\Programs\\Python\\Python37\\爬虫实例\\douban.xls')
+    wb.save(r'C:\\Users\\Q\AppData\\Local\\Programs\\Python\\Python37\\爬虫实例\\douban.xls')
+
+for i in range(10):
+    crow(i)
+
+
