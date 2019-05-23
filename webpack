@@ -1,0 +1,53 @@
+webpack命令行打包
+webpack app.js(入口) bundle.js(出口)
+
+配置文件配置
+webpack --config +配置名字 命令行运行
+webpack.config.js  以common.js模块化形式打包的
+
+module.exports={
+   entry:{
+      app:'./app.js'
+   }
+   output:{
+      filename:'[name].[hash:5].js'
+   }
+}
+
+编译ES6,7
+Babel
+Babel-loader
+Babel-core
+npm install babel-loader@8.0.0-beta.o @babel/core
+Babel Presets 打包规则 
+npm install @babel/preset-env --save-dev
+
+module.exports={
+   entry:{
+      app:'./app.js'
+   },
+   output:{
+      filename:'[name].[hash:5].js'
+   },
+   module:{
+      rules:{
+           test:/\.js$/,
+           use:babel-loader',
+           use:{
+               loader:'babel-loader',
+               options:{ //打包遵守的规则
+                  presets:[
+                  ['@babel/preset-env',{
+                      targets:{//
+                         browers:['>1%','last 2 versions'] //设置浏览器不通的参数 然后浏览器解析app.js根据你设置的参数 打包出不通的东西
+                      }
+                  }]]
+               }
+           }
+           exclude:'/node_modules' //过滤掉这个项目
+      }
+   }
+}
+
+Babel Polyfill
+Babel 
