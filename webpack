@@ -67,3 +67,7 @@ npm install babel-plugin-transform-runtime --save-dev 或者 npm install @babel/
   "plugins":["@babel/transform-runtime"]
 }
 
+编译TypeScript
+npm install typescript ts-loader --save-dev
+tsconfig.json
+
