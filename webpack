@@ -55,7 +55,15 @@ npm install babel-polyfill --save
 使用方法 import 'babel-polyfill'
 
 Babel Runtime Transform 局部垫片 为开发框架准备 不会污染全局
-npm install babel-polyfill babel-runtime --save
-npm install babel-plugin-transform-runtime --save-dev
-.babelrc
+npm install babel-polyfill babel-runtime --save 或者  npm install @babel/runtime --save
+npm install babel-plugin-transform-runtime --save-dev 或者 npm install @babel/plugin-transform-runtime --save-dev
+.babelrc文件
+{
+  "presets":['@babel/preset-env',{
+      "targets":{
+          "browsers":["last 2 versions"]
+      }
+  }],
+  "plugins":["@babel/transform-runtime"]
+}
 
