@@ -19,7 +19,7 @@ Babel
 Babel-loader
 Babel-core
 npm install babel-loader@8.0.0-beta.o @babel/core
-Babel Presets 打包规则 
+Babel Presets 打包规则 规范的版本 像let 在不同浏览器版本下会打包成let和var
 npm install @babel/preset-env --save-dev
 
 module.exports={
@@ -49,5 +49,13 @@ module.exports={
    }
 }
 
-Babel Polyfill
-Babel 
+因为一些js方法不会被处理 set Map Arrar.from Array.prototype.includes Generator
+Babel Polyfill  全局垫片 为应用准备 会污染全局 
+npm install babel-polyfill --save
+使用方法 import 'babel-polyfill'
+
+Babel Runtime Transform 局部垫片 为开发框架准备 不会污染全局
+npm install babel-polyfill babel-runtime --save
+npm install babel-plugin-transform-runtime --save-dev
+.babelrc
+
